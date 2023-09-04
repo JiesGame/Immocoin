@@ -11,7 +11,11 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: @user
+    if @user == get_user_from_token
+      render json: @user, include: :properties
+    else
+      render json: { error: "Vous ne pouvez voir que votre profil."}
+    end
   end
 
   # POST /users
