@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { DeletePropertyButton } from './DeletePropertyButton';
 import { EditPropertyButton } from './EditPropertyButton';
 
@@ -8,15 +7,22 @@ export const DetailSpecificProperty = (props) => {
   const description = props.description;
   const price = props.price;
   const propertyID = props.id;
+  const fetchAfterDelete = props.fetchAfterDelete;
+  const setFetchAfterDelete = props.setFetchAfterDelete;
 
   return (
     <div key={propertyID}>
-      <p><Link to={`property/${propertyID}`}>{title}</Link></p>
+      <p>{title}</p>
       <p>{description}</p>
       <p>Au prix de {price} €</p>
-      <DeletePropertyButton propertyID={propertyID}/>
-      <EditPropertyButton propertyID={propertyID}/>
-      <p>---------</p>
+      <div className='flex gap-4'>
+        <DeletePropertyButton
+          propertyID={propertyID}
+          fetchAfterDelete={fetchAfterDelete}
+          setFetchAfterDelete={setFetchAfterDelete}
+        />
+        <EditPropertyButton propertyID={propertyID}/>
+      </div>
     </div>
   )
 }
@@ -28,5 +34,7 @@ DetailSpecificProperty.propTypes= {
   user: PropTypes.object,
   title: PropTypes.string,
   description: PropTypes.string,
-  price: PropTypes.number
+  price: PropTypes.number,
+  fetchAfterDelete: PropTypes.bool,
+  setFetchAfterDelete: PropTypes.func
 }

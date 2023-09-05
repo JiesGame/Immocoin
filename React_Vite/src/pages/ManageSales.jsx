@@ -8,6 +8,7 @@ export const ManageSales = () => {
   const [user] = useAtom(userAtom);
   const [propertiesNumber, setPropertiesNumber] = useState(0)
   const [dataProperties, setDataProperties] = useState([]);
+  const [fetchAfterDelete, setFetchAfterDelete] = useState(false);
 
 
   useEffect(() => {
@@ -33,6 +34,8 @@ export const ManageSales = () => {
           description={property.description}
           price={property.price}
           user={property.user}
+          fetchAfterDelete={fetchAfterDelete}
+          setFetchAfterDelete={setFetchAfterDelete}
         />
       ));
       setPropertiesNumber(data.properties.length);
@@ -40,7 +43,7 @@ export const ManageSales = () => {
     .catch(error => {
       console.error("Fetch error:", error);
     });
-  }, [])
+  }, [fetchAfterDelete]);
 
   return (
     <>

@@ -6,11 +6,11 @@ export const DetailProperty = (props) => {
   const title = props.title;
   const description = props.description;
   const price = props.price;
-  const postID = props.id;
+  const propertyID = props.id;
 
   return (
-    <div key={postID}>
-      <p><Link to={`property/${postID}`}>{title}</Link></p>
+    <div key={propertyID}>
+      <p><Link to={`property/${propertyID}`}>{title}</Link></p>
       <p className='my-2'>Propriété proposée par {username}</p>
       <p className='my-2'>description: {description}</p>
       <p>Au prix de {price} €</p>
@@ -20,7 +20,7 @@ export const DetailProperty = (props) => {
 }
 
 DetailProperty.propTypes= {
-  postID: PropTypes.number,
+  propertyID: PropTypes.number,
   post: PropTypes.object,
   id: PropTypes.number,
   user: PropTypes.object,
