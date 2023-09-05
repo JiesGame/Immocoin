@@ -17,7 +17,7 @@ export const ListProperties = () => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error("La liste des propriétés n'a pas pu être récupéré!");
+      throw new Error("La liste des propriétés n'a pas pu être récupérée !");
     })
     .then(data => {
       setDataProperties(data.map(property => 
@@ -39,9 +39,11 @@ export const ListProperties = () => {
 
   return (
     <>
-      <h2>Liste des propriétés</h2>
-      <p>Il y a actuellement {propertiesNumber} propriétés à vendre.</p>
-      {dataProperties}
+      <h2 className="font-bold text-2xl mt-10">Liste des propriétés</h2>
+      <p className="font-semibold text-xl my-5">Il y a actuellement {propertiesNumber} propriétés à vendre.</p>
+      <div className="font-semibold">
+        {dataProperties}
+      </div>
     </>
   )
 }

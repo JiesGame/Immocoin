@@ -11,10 +11,10 @@ export const DetailProperty = (props) => {
   return (
     <div key={postID}>
       <p><Link to={`property/${postID}`}>{title}</Link></p>
-      <p>Propriété proposée par {username}</p>
-      <p>{description}</p>
+      <p className='my-2'>Propriété proposée par {username}</p>
+      <p className='my-2'>description: {description}</p>
       <p>Au prix de {price} €</p>
-      <p>---------</p>
+      <p className='border-2 mt-2 mb-10'></p>
     </div>
   )
 }
