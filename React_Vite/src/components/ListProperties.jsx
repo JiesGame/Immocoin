@@ -20,7 +20,7 @@ export const ListProperties = () => {
       throw new Error("La liste des propriétés n'a pas pu être récupérée !");
     })
     .then(data => {
-      setDataProperties(data.map(property => 
+      setDataProperties(data.reverse().map(property => 
         <DetailProperty 
           key={property.id}
           id={property.id}
