@@ -1,8 +1,13 @@
+/* eslint-disable react/no-unescaped-entities */
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
 export const DeletePropertyButton = (props) => {
+
+  const fetchAfterDelete = props.fetchAfterDelete;
+  const setFetchAfterDelete = props.setFetchAfterDelete;
+
   const deleteProperty = () => {
     fetch(`http://127.0.0.1:3000/properties/${props.propertyID}`, {
       method: 'delete',
@@ -22,6 +27,7 @@ export const DeletePropertyButton = (props) => {
         progress: undefined,
         theme: "colored",
       });
+      setFetchAfterDelete(!fetchAfterDelete)
     })
     .catch(error => {
       console.error(error);
@@ -29,10 +35,12 @@ export const DeletePropertyButton = (props) => {
   }
 
   return (
-    <button onClick={deleteProperty}>Supprimer le post</button> 
+    <button onClick={deleteProperty}>Supprimer l'annonce</button> 
   )
 }
 
 DeletePropertyButton.propTypes= {
-  propertyID: PropTypes.number
+  propertyID: PropTypes.number,
+  fetchAfterDelete: PropTypes.bool,
+  setFetchAfterDelete: PropTypes.func
 }

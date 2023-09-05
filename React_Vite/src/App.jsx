@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ShowProperty } from "./pages/ShowProperty";
 import { SellProperty } from "./pages/SellProperty";
 import { ManageSales } from "./pages/ManageSales";
+import { EditProperty } from "./pages/EditProperty";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route element={<PrivateRoutes/>}>
             <Route path='manage_sales' element={<ManageSales />} />
+            <Route path='edit_property/:id' element={<EditProperty />}/>
             <Route path='change_profile' element={<ChangeProfile />} />
             <Route path='sell_property' element={<SellProperty />}/>
           </Route>

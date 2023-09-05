@@ -15,20 +15,22 @@ class PropertiesController < ApplicationController
 
   # POST /properties
   def create
-    @user = get_user_from_token
-    @property = Property.new(property_params.merge(user_id: @user.id))
-
-    if @property.save
-      render json: @property, status: :created, location: @property
+    if current_user
+      @property = Property.new(property_params.merge(user_id: current_user.id))
+      if @property.save
+        render json: @property, status: :created, location: @property
+      else
+        render json: @property.errors, status: :unprocessable_entity
+      end
     else
-      render json: @property.errors, status: :unprocessable_entity
+      render json: { error: "Vous devez vous connecter pour créer une annonce." }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /properties/1
   def update
     if @property.user.id == current_user.id
-      if @property.update(property_params.merge(user_id: @article.user.id))
+      if @property.update(property_params.merge(user_id: @property.user.id))
         render json: @property
       else
         render json: @property.errors, status: :unprocessable_entity
