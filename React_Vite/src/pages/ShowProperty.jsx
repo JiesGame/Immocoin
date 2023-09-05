@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export const ShowProperty = () => {
   const { id } = useParams();
@@ -29,7 +30,7 @@ export const ShowProperty = () => {
     <>
       <h1>{property.title}</h1>
       <div>
-        <p>Vendeur: {property.user.email}</p>
+        {Cookies.get("token") && <p>Vendeur: {property.user.email}</p>}
         <p>Description: {property.description}</p>
         <p>Prix: {property.price} €</p>
       </div>

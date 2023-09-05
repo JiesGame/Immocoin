@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export const DetailProperty = (props) => {
   const username = props.user.email;
@@ -11,7 +12,7 @@ export const DetailProperty = (props) => {
   return (
     <div key={propertyID}>
       <p><Link to={`property/${propertyID}`}>{title}</Link></p>
-      <p className='my-2'>Propriété proposée par {username}</p>
+      {Cookies.get("token") && <p className='my-2'>Propriété proposée par {username}</p>}   
       <p className='my-2'>description: {description}</p>
       <p>Au prix de {price} €</p>
       <p className='border-2 mt-2 mb-10'></p>
