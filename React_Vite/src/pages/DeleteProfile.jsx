@@ -2,11 +2,11 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useAtom } from "jotai";
 import { userAtom } from "../store/atoms";
-import { toastSuccess, toastError, toastInfo } from "../services/toast";
+import { toastError, toastInfo } from "../services/toast";
 import { useState } from "react";
 import { deleteProfileFetch } from "../services/axios";
 
@@ -43,9 +43,7 @@ export const DeleteProfile = () => {
   return (
     <div className="flex items-center justify-center ">
       <div className="w-[26rem]">
-        <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        >
+        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Mot de passe actuel
@@ -56,11 +54,7 @@ export const DeleteProfile = () => {
               placeholder="Mot de passe..."
               {...register("current_password")}
             />
-            {errors.current_password?.message && (
-              <p className="text-red-500 text-xs">
-                {errors.current_password?.message}
-              </p>
-            )}
+            {errors.current_password?.message && (<p className="text-red-500 text-xs">{errors.current_password?.message}</p>)}
           </div>
           <div className="flex justify-center mb-4">
           <input
@@ -68,13 +62,10 @@ export const DeleteProfile = () => {
             onClick={handleDeleteClick}
           />
         </div>
-
           {isDeleteConfirmation && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white p-4 rounded shadow-md">
-                <p className="mb-4">
-                  Êtes-vous sûr de vouloir supprimer votre profil ?
-                </p>
+                <p className="mb-4">Êtes-vous sûr de vouloir supprimer votre profil ?</p>
                 <div className="flex justify-end">
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
