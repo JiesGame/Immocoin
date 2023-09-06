@@ -5,7 +5,6 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-
     render json: @users
   end
 
@@ -31,28 +30,16 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+    update_params = user_params.except(:current_password)
+    update_params.delete(:password) if user_params[:password].blank?
+    update_params.delete(:email) if user_params[:email].blank?
+    
     if @user == get_user_from_token
       if @user.valid_password?(user_params[:current_password])
-        if user_params[:password] != "" && user_params[:email] != ""
-          if @user.update(user_params.except(:current_password))
-            render json: @user
-          else
-            render json: @user.errors, status: :unprocessable_entity
-          end
-        elsif user_params[:password] == ""
-          if @user.update(user_params.except(:current_password, :password))
-            render json: @user
-          else
-            render json: @user.errors, status: :unprocessable_entity
-          end
-        elsif user_params[:email] == ""
-          if @user.update(user_params.except(:current_password, :email))
-            render json: @user
-          else
-            render json: @user.errors, status: :unprocessable_entity
-          end
+        if @user.update(update_params)
+          render json: @user
         else
-          render json: { error: "Un élément doit au moins être modifié."}
+          render json: @user.errors, status: :unprocessable_entity
         end
       else
         render json: { error: "Le mot de passe est incorrect." }, status: :unprocessable_entity

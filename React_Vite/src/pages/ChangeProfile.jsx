@@ -6,12 +6,10 @@ import { useNavigate, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useAtom } from "jotai";
 import { userAtom } from "../store/atoms";
-import { toastSuccess, toastError, toastInfo } from "../services/toast";
-import { useState } from "react";
-import { changeProfileFetch, deleteProfileFetch } from "../services/axios";
+import { toastSuccess, toastError } from "../services/toast";
+import { changeProfileFetch } from "../services/axios";
 
 export const ChangeProfile = () => {
-  const [isDeleteConfirmation, setIsDeleteConfirmation] = useState(false);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useAtom(userAtom);
   const token = Cookies.get('token')
