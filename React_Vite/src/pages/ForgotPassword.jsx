@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useNavigate, Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { toastInfo } from '../services/toast';
+import { forgotPasswordFetch } from '../services/axios';
+import { useState } from 'react';
 
 export const ForgotPassword = () => {
   const schema = yup.object().shape({
@@ -12,41 +14,17 @@ export const ForgotPassword = () => {
   const {register, handleSubmit, formState: {errors} } = useForm({
     resolver: yupResolver(schema)
   });
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const onSubmit = (data) => {
-    const userEmail = data.email
-    fetch("http://127.0.0.1:3000/password/forgot", {
-      method: "POST",
-      headers: {
-        "Content-Type" : "application/json"
-      },
-      body: JSON.stringify({
-        email: userEmail
-      })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  const onSubmit = async (data) => {
+    try {
+      const userChangePassword = await forgotPasswordFetch(data);
+      if(userChangePassword) {
+        toastInfo("Un mail a été envoyé à l'adresse indiqué (sous réserve de l'existence d'un compte).");
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Response data:", data);
-      toast.info("Un mail a été envoyé à l'adresse indiqué (sous réserve de l'existence d'un compte).", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
-    })
-    .catch(error => {
-      console.error("Fetch error:", error);
-    });
+    } catch(error) {
+      setErrorMessage(error);
+    }
   }
 
   return (

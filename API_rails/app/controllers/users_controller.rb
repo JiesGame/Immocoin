@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show update destroy ]
-  before_action :authenticate_user!, only: %i[ create update destroy ]
+  # before_action :authenticate_user!, only: %i[ create update destroy ]
 
   # GET /users
   def index
@@ -31,7 +31,6 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    @user = User.find(params[:id])
     if @user == get_user_from_token
       if @user.valid_password?(user_params[:current_password])
         if user_params[:password] != "" && user_params[:email] != ""
@@ -65,9 +64,15 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @updatedUserID = params[:id].to_i
-    if @updatedUserID == get_user_from_token.id
-      @user.destroy
+    puts @user
+    puts '------------------'
+    puts get_user_from_token
+    if @user == current_user
+      # if @user.valid_password?(user_params[:current_password])
+        @user.destroy
+      # else
+      #   render json: { error: "Le mot de passe est incorrect." }, status: :unprocessable_entity
+      # end
     else
       render json: { error: "Vous ne pouvez pas supprimer un autre profil que le votre." }, status: :unprocessable_entity
     end
@@ -83,8 +88,6 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:email, :password, :current_password)
     end
-
-    private
 
     def get_user_from_token
       jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1],
