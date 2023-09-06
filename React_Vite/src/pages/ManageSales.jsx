@@ -27,6 +27,8 @@ export const ManageSales = () => {
     })
     .then(data => {
       setDataProperties(data.properties.map(property => 
+        <>
+        {console.log(property)}
         <DetailSpecificProperty 
           key={property.id}
           id={property.id}
@@ -37,6 +39,7 @@ export const ManageSales = () => {
           fetchAfterDelete={fetchAfterDelete}
           setFetchAfterDelete={setFetchAfterDelete}
         />
+        </>
       ));
       setPropertiesNumber(data.properties.length);
     })

@@ -5,16 +5,18 @@ class PropertiesController < ApplicationController
   def index
     @properties = Property.all
 
-    render json: @properties, include: :user
+    render json: @properties, include: [:user, :featured_image]
   end
 
   # GET /properties/1
   def show
-    render json: @property, include: :user
+    render json: @property, include: [:user, :featured_image]
   end
 
   # POST /properties
   def create
+    puts property_params
+    puts '________________'
     if current_user
       @property = Property.new(property_params.merge(user_id: current_user.id))
       if @property.save
@@ -57,7 +59,7 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.require(:property).permit(:title, :price, :description)
+      params.permit(:title, :price, :description, :featured_image)
     end
 
     def get_user_from_token

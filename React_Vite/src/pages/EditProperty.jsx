@@ -22,7 +22,7 @@ export const EditProperty = () => {
     resolver: yupResolver(schema),
     }
   );
-  console.log(dataProperty.price)
+
 
   useEffect(() => {
     fetch(`http://127.0.0.1:3000/properties/${id}`, {

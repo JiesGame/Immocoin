@@ -30,6 +30,8 @@ export const ShowProperty = () => {
     <>
       <h1>{property.title}</h1>
       <div>
+        {property.featured_image && <img src={property.featured_image.url} alt={property.title}/>}
+        {console.log(property.url)}
         {Cookies.get("token") && <p>Vendeur: {property.user.email}</p>}
         <p>Description: {property.description}</p>
         <p>Prix: {property.price} €</p>
