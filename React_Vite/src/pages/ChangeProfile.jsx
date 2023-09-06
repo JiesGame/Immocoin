@@ -40,24 +40,6 @@ export const ChangeProfile = () => {
     }
   };
 
-  const handleDeleteClick = () => {
-    setIsDeleteConfirmation(true);
-  };
-
-  const handleConfirmDelete = async (data) => {
-    setIsDeleteConfirmation(false)
-    try {
-      const userID = JSON.parse(Cookies.get("userInfo")).id;
-      const userDeleteProfil = await deleteProfileFetch(data, token, userID, setUserInfo);
-      if(userDeleteProfil) {
-        toastInfo("Votre compte a bien été supprimé.");
-        navigate('/');
-      }
-    } catch(error) {
-      toastError("Votre compte n'a pas pu être supprimé.");
-    }
-  };
-
   return (
     <div className="flex items-center justify-center ">
       <div className="w-[26rem]">
@@ -130,7 +112,7 @@ export const ChangeProfile = () => {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Mot de passe actuel (obligatoire pour modification ou suppression)
+              Mot de passe actuel
             </label>
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
@@ -167,39 +149,12 @@ export const ChangeProfile = () => {
               Créer un compte
             </Link>
           </div>
-          {isDeleteConfirmation && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white p-4 rounded shadow-md">
-                <p className="mb-4">
-                  Êtes-vous sûr de vouloir supprimer votre profil ?
-                </p>
-                <div className="flex justify-end">
-                  <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
-                    onClick={handleConfirmDelete}
-                  >
-                    Oui
-                  </button>
-                  <button
-                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-                    onClick={() => setIsDeleteConfirmation(false)}
-                  >
-                    Annuler
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </form>
-        <p className="text-center text-gray-500 text-xs">
-          &copy;2023 JiesGame. All rights reserved.
-        </p>
         <div className="flex justify-center mb-4">
           <button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={handleDeleteClick}
           >
-            Supprimer le profil
+            <Link to="/delete_account">Supprimer le profil</Link>
           </button>
         </div>
       </div>

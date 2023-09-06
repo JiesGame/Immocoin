@@ -115,13 +115,10 @@ export const changeProfileFetch = async (data, token, userID, setUserInfo) => {
   });
 }
 
-export const deleteProfileFetch = async (data, token, userID, setUserInfo) => {
-    const fetchURL = `${baseURL}/users/${userID}`
-  const fetchBody = {
-    "current_password": data.current_password,
-  }
-  return axios.delete(
-    fetchURL, fetchBody,
+export const deleteProfileFetch = async (data, token, setUserInfo) => {
+  const fetchURL = `${baseURL}/users/destroy_with_password`
+  return axios.post(
+    fetchURL, {data},
     {
       headers: {
         'Content-Type': 'application/json',
