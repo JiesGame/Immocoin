@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Collapse, Dropdown, initTE } from "tw-elements";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.svg";
+import logo2 from "../assets/dropdown-menu-icon-16.jpg";
 import { Logout } from "./Logout";
 import "../App.css";
 import Cookies from "js-cookie";
@@ -39,10 +40,11 @@ export const Navbar = () => {
             <div id="navButton" className="flex-grow text-lg mr-6">
               <div className="absolute top-1/2 transform -translate-y-1/2 right-0 mr-2" data-te-dropdown-ref>
                 <a className="flex items-center hidden-arrow whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none gap-1 mr-10" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
-                  <img id="dropdown" src={logo} className="rounded-full" style={{ height: `25px`, width: `25px` }}/>
-                  {isLoggedIn && <p>{userInfo.email}</p>}
-                  {!isLoggedIn && <p>Se connecter / Créer un compte</p>}
-                </a> 
+                  <img id="dropdown" src={logo} className="rounded-full ml-10" style={{ height: `30px`, width: `30px` }}/>
+                  {!isMobile && (
+                    (isLoggedIn ? <p>{userInfo.email}</p> : <p>Se connecter / Créer un compte</p>)
+                  )}
+                </a>
                 <ul className="absolute left-0 right-auto z-[1000] m-0 mt-1 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block" aria-labelledby="dropdownMenuButton2" data-te-dropdown-menu-ref>
                   {!isLoggedIn &&
                   <>
