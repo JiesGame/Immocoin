@@ -34,17 +34,4 @@ class PasswordController < ApplicationController
       render json: {error:  ["Le lien n'est pas valide ou est expiré. Merci de générer un nouveau lien."]}, status: :not_found
     end
   end
-
-  # def update
-  #   if !params[:password].present?
-  #     render json: {error: "Le mot de passe n'est pas renseignée."}, status: :unprocessable_entity
-  #     return
-  #   end
-  
-  #   if current_user.reset_password(params[:password])
-  #     render json: {status: 'ok'}, status: :ok
-  #   else
-  #     render json: {errors: current_user.errors.full_messages}, status: :unprocessable_entity
-  #   end
-  # end
 end

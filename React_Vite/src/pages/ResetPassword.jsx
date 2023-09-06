@@ -2,8 +2,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState } from 'react';
+import { resetPasswordFetch } from '../services/axios';
+import { toastSuccess } from '../services/toast';
 
 export const ResetPassword = () => {
   const schema = yup.object().shape({
@@ -15,42 +16,19 @@ export const ResetPassword = () => {
     resolver: yupResolver(schema)
   });
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
   const { token } = useParams();
 
-  const onSubmit = (data) => {
-    const userPassword = data.password
-    fetch(`http://127.0.0.1:3000/password/reset/${token}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type" : "application/json"
-      },
-      body: JSON.stringify({
-        password: userPassword
-      })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  const onSubmit = async (data) => {
+    try {
+      const userResetPassword = await resetPasswordFetch(data, token);
+      if(userResetPassword) {
+        toastSuccess('Votre mot de passe a bien été modifié !');
+        navigate('/login');
       }
-      navigate('/login');
-      toast.info("Votre mot de passe a été modifié.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return response.json();
-    })
-    .then(data => {
-      console.log("Response data:", data);
-    })
-    .catch(error => {
-      console.error("Fetch error:", error);
-    });
+    } catch(error) {
+      setErrorMessage(error);
+    }
   }
 
   return (

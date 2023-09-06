@@ -2,65 +2,33 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { loginFetch } from '../services/axios';
+import { toastError, toastSuccess } from '../services/toast';
 import { useAtom } from 'jotai';
 import { userAtom } from '../store/atoms';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export const Login = () => {
   const schema = yup.object().shape({
     email: yup.string().required("L'email est requis."),
-    password: yup.string().required(),
+    password: yup.string().required()
   });
 
   const {register, handleSubmit, formState: {errors} } = useForm({
     resolver: yupResolver(schema)
   });
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useAtom(userAtom)
+  const [userInfo, setUserInfo] = useAtom(userAtom);
 
-  const onSubmit = (data) => {
-    fetch("http://127.0.0.1:3000/users/sign_in", {
-      method: "POST",
-      headers: {
-        "Content-Type" : "application/json"
-      },
-      body: JSON.stringify({
-        "user": {
-          "email": data.email,
-          "password": data.password
-        }
-      })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  const onSubmit = async (data) => {
+    try {
+      const userLogin = await loginFetch(data, setUserInfo);
+      if(userLogin) {
+        toastSuccess('Vous êtes connectés !');
+        navigate('/');
       }
-      Cookies.set('token',response.headers.get('Authorization').split(" ")[1], { expires: 7 });
-      return response.json();
-    })
-    .then(data => {
-      console.log("Response data:", data);
-      Cookies.set('userInfo', JSON.stringify({"id":data.user.id, "email":data.user.email}), { expires: 7 });
-      setUserInfo({"id":data.user.id, "email":data.user.email, "token":Cookies.get('token')});
-      navigate('/');
-      toast.success('Vous êtes connectés.', {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
-    })
-    .catch(error => {
-      console.error("Fetch error:", error);
-    });
-
-
+    } catch(error) {
+      toastError("Adresse mail et / ou mot de passe incorrect(s).");
+    }
   }
 
   return (

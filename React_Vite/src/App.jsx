@@ -16,6 +16,7 @@ import { ShowProperty } from "./pages/ShowProperty";
 import { SellProperty } from "./pages/SellProperty";
 import { ManageSales } from "./pages/ManageSales";
 import { EditProperty } from "./pages/EditProperty";
+import { DeleteProfile } from "./pages/DeleteProfile";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             <Route path='manage_sales' element={<ManageSales />} />
             <Route path='edit_property/:id' element={<EditProperty />}/>
             <Route path='change_profile' element={<ChangeProfile />} />
+            <Route path='delete_account' element={<DeleteProfile />}/>
             <Route path='sell_property' element={<SellProperty />}/>
           </Route>
           <Route path="/" element={<Home />} />
