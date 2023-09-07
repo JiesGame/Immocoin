@@ -26,7 +26,7 @@ export const ManageSales = () => {
       return response.json();
     })
     .then(data => {
-      setDataProperties(data.properties.map(property => 
+      setDataProperties(data.properties.reverse().map(property => 
         <DetailSpecificProperty 
           key={property.id}
           id={property.id}
