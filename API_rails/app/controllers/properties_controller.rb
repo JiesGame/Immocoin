@@ -1,5 +1,6 @@
 class PropertiesController < ApplicationController
-  before_action :set_property, only: %i[ show update destroy ]
+  before_action :set_property, only: %i[ show  destroy ]
+  before_action :authenticate_user!, only: %i[ create update destroy ]
 
   # GET /properties
   def index
@@ -15,22 +16,17 @@ class PropertiesController < ApplicationController
 
   # POST /properties
   def create
-    puts property_params
-    puts '________________'
-    if current_user
-      @property = Property.new(property_params.merge(user_id: current_user.id))
-      if @property.save
-        render json: @property, status: :created, location: @property
-      else
-        render json: @property.errors, status: :unprocessable_entity
-      end
+    @property = Property.new(property_params.merge(user_id: current_user.id))
+    if @property.save
+      render json: @property, status: :created, location: @property
     else
-      render json: { error: "Vous devez vous connecter pour créer une annonce." }, status: :unprocessable_entity
+      render json: @property.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /properties/1
   def update
+    @property = Property.find(params[:id])
     if @property.user.id == current_user.id
       if @property.update(property_params.merge(user_id: @property.user.id))
         render json: @property
@@ -59,7 +55,7 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.permit(:title, :price, :description, :featured_image)
+      params.require(:property).permit(:title, :price, :description, :featured_image)
     end
 
     def get_user_from_token

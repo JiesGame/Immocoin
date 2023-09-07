@@ -5,8 +5,7 @@ import * as yup from 'yup';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toastSuccess, toastError } from '../services/toast';
 
 export const SellProperty = () => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -14,7 +13,7 @@ export const SellProperty = () => {
     title: yup.string().min(10, "Le titre doit comprendre entre 10 et 30 caractères.").max(30, "Le titre doit comprendre entre 10 et 30 caractères.").required(),
     description: yup.string().min(30, "La description doit faire entre 40 et 200 caractères.").max(200, "La description doit faire entre 40 et 200 caractères.").required(),
     price: yup.number().positive("La valeur doit être positive.").required("Le prix est nécessaire."),
-    featured_image: yup.mixed()
+    featured_image: yup.mixed().required("L'image est nécessaire")
   });
   const navigate = useNavigate();
   const {register, handleSubmit, formState: {errors} } = useForm({
@@ -23,14 +22,11 @@ export const SellProperty = () => {
   );
 
   const onSubmit = (data) => {
-    console.log(data.featured_image[0])
-
     const formData = new FormData();
-    formData.append("featured_image", data.featured_image[0]);
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("price", data.price);
-    
+    formData.append("property[featured_image]", data.featured_image[0]);
+    formData.append("property[title]", data.title);
+    formData.append("property[description]", data.description);
+    formData.append("property[price]", data.price);
 
     fetch("http://127.0.0.1:3000/properties", {
       method: "POST",
@@ -49,20 +45,12 @@ export const SellProperty = () => {
     .then(data => {
       console.log("Response data:", data);
       navigate('/');
-      toast.success("L'annonce a été publiée !", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
+      toastSuccess("L'annonce a été publiée !")
     })
     .catch(error => {
       console.error("Fetch error:", error);
-      setErrorMessage("Erreur lors de la création de l'annonce.");
+      setErrorMessage("Erreur lors de la création de l'annonce, merci de vérifier que l'image soit présente.");
+      toastError("L'annonce n'a pas pu être publiée !")
     })
    };
 
