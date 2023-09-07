@@ -23,7 +23,7 @@ export const SellProperty = () => {
 
   const onSubmit = (data) => {
     const formData = new FormData();
-    formData.append("property[featured_image]", data.featured_image[0]);
+    data.featured_image[0] && formData.append("property[featured_image]", data.featured_image[0]);
     formData.append("property[title]", data.title);
     formData.append("property[description]", data.description);
     formData.append("property[price]", data.price);
@@ -49,7 +49,7 @@ export const SellProperty = () => {
     })
     .catch(error => {
       console.error("Fetch error:", error);
-      setErrorMessage("Erreur lors de la création de l'annonce, merci de vérifier que l'image soit présente.");
+      setErrorMessage("Erreur lors de la création de l'annonce.");
       toastError("L'annonce n'a pas pu être publiée !")
     })
    };
