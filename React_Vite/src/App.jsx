@@ -1,10 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
-import { Navbar } from "./components/Navbar";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
-import { Footer } from "./components/Footer";
+import { Layout } from "./components/Layout";
 import './App.css';
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { ResetPassword } from "./pages/ResetPassword";
@@ -23,25 +22,25 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar />
-        <Routes>
-          <Route element={<PrivateRoutes/>}>
-            <Route path='manage_sales' element={<ManageSales />} />
-            <Route path='edit_property/:id' element={<EditProperty />}/>
-            <Route path='change_profile' element={<ChangeProfile />} />
-            <Route path='delete_account' element={<DeleteProfile />}/>
-            <Route path='sell_property' element={<SellProperty />}/>
-          </Route>
-          <Route path="/" element={<Home />} />
-          <Route path="/404" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/404" replace/>}/>
-          <Route path='register' element={<Register />} />
-          <Route path='login' element={<Login />} />
-          <Route path='forgot_password' element={<ForgotPassword />} />
-          <Route path='reset_password/:token' element={<ResetPassword />} />
-          <Route path='property/:id' element={<ShowProperty />}/>
-        </Routes>
-        <Footer />
+        <Layout>
+          <Routes>
+            <Route element={<PrivateRoutes/>}>
+              <Route path='manage_sales' element={<ManageSales />} />
+              <Route path='edit_property/:id' element={<EditProperty />}/>
+              <Route path='change_profile' element={<ChangeProfile />} />
+              <Route path='delete_account' element={<DeleteProfile />}/>
+              <Route path='sell_property' element={<SellProperty />}/>
+            </Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/404" replace/>}/>
+            <Route path='register' element={<Register />} />
+            <Route path='login' element={<Login />} />
+            <Route path='forgot_password' element={<ForgotPassword />} />
+            <Route path='reset_password/:token' element={<ResetPassword />} />
+            <Route path='property/:id' element={<ShowProperty />}/>
+          </Routes>
+        </Layout>
       </Router>
       <ToastContainer/>
     </>
